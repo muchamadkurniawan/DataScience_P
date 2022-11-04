@@ -61,7 +61,7 @@ class class_dataset:
         print("DATASET Dissimilarity")
         df = genfromtxt('GLCMbaru.csv.xls', delimiter=',', skip_header=1)
         # print(df.shape)
-        self.X = df[:, 5:10]
+        self.X = df[:, 1:5]
         y = df[:, 25:26]
         yy = []
         for i in range(len(y)):
