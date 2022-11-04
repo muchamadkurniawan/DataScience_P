@@ -17,8 +17,9 @@ class class_KNN:
     def model(self):
         print("in model X :", self.X)
         print(len(self.X))
-        self.model = KNeighborsClassifier(n_neighbors=3)
+        self.model = KNeighborsClassifier(n_neighbors=10)
         self.model.fit(np.array(self.X), self.y)
 
     def predict(self, data_testing):
         print("prediksi : ", self.model.predict(data_testing))
+        return self.model.predict(data_testing)

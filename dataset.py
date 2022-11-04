@@ -18,6 +18,8 @@ class class_dataset:
             self.artificialDataset()
         elif self.name == "glcm":
             self.odilDataset()
+        elif self.name =="dissimilarity":
+            self.tenun_dissimilarity()
 
     def artificialDataset(self):
         print("DATASET 2D")
@@ -45,9 +47,21 @@ class class_dataset:
 
     def odilDataset(self):
         print("DATASET glcm")
-        df = genfromtxt('GLCM.csv.xls', delimiter=',', skip_header=1)
+        df = genfromtxt('GLCMbaru.csv.xls', delimiter=',', skip_header=1)
         # print(df.shape)
         self.X = df[:, 1:25]
+        y = df[:, 25:26]
+        yy = []
+        for i in range(len(y)):
+            # print(y[i][0])
+            yy.append(y[i][0])
+        self.y = yy
+
+    def tenun_dissimilarity(self):
+        print("DATASET Dissimilarity")
+        df = genfromtxt('GLCMbaru.csv.xls', delimiter=',', skip_header=1)
+        # print(df.shape)
+        self.X = df[:, 5:10]
         y = df[:, 25:26]
         yy = []
         for i in range(len(y)):
