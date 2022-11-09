@@ -1,5 +1,5 @@
 from dataset import class_dataset
-from classifier import class_KNN
+from classifier import *
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
@@ -15,20 +15,24 @@ if __name__ == '__main__':
 
     #preprocesing (normalisasi)
 
-
-    #model
     X_train, X_test, y_train, y_test = train_test_split(
-        data.X, data.y, test_size = 0.33, random_state = 42)
-    knn = class_KNN(X_train, y_train)
-    # knn.viewDataset()
-    knn.model()
-    # data_testing = np.array(data.X[0])
-    # print(np.array(data_testing[0]))
-    y_pred = knn.predict(X_test)
-    # print("y prediksi L", y_pred)
-    # print("y actual ",data.y)
+        data.X, data.y, test_size=0.33, random_state=42)
+
+    ## model KNN
+        # knn = class_KNN(X_train, y_train)
+    # knn.model()
+    # y_pred = knn.predict(X_test)
+    # acc = accuracy_score(y_test, y_pred)
+    # print("accuracy : ",acc)
+
+    ## model NB
+    nb = class_NB(X_train, y_train)
+    nb.model()
+    y_pred = nb.predict(X_test)
     acc = accuracy_score(y_test, y_pred)
-    print("accuracy : ",acc)
+    print("accuracy NB: ",acc)
+
+
     #evaluasi
 
 
