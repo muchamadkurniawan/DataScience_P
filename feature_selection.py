@@ -1,8 +1,10 @@
-from sklearn.feature_selection import SelectFromModel
 from sklearn.svm import LinearSVC
 from sklearn.ensemble import ExtraTreesClassifier
 from scipy.stats import pearsonr
+from sklearn.feature_selection import SelectKBest, chi2, \
+    f_classif, f_regression, RFE, SelectFromModel
 import numpy as np
+from sklearn.svm import SVC
 
 class feature_selection:
     X = []
@@ -53,3 +55,47 @@ class feature_selection:
         # print(np.array(newX))
         # print(ind)
         return np.array(newX).transpose()
+
+    def selectKbest_Anova(self, nfeature):
+        print("select kbest - Anova")
+        fvalue_Best = SelectKBest(f_classif, k=nfeature)
+        X_kbest = fvalue_Best.fit_transform(self.X, self.y)
+        return X_kbest
+
+    def selectKbest_Chi2(self, nfeature):
+        print("select kbest - chi square")
+        # print(min(self.X[1]))
+        fvalue_Best = SelectKBest(chi2, k=nfeature)
+        X_kbest = fvalue_Best.fit_transform(self.X, self.y)
+        # print(X_kbest)
+        return X_kbest
+
+    def selectKbest_regression(self, nfeature):
+        print("select Kbest - regression")
+        # print(min(self.X[1]))
+        fvalue_Best = SelectKBest(f_regression, k=nfeature)
+        X_kbest = fvalue_Best.fit_transform(self.X, self.y)
+        # print(X_kbest)
+        return X_kbest
+
+    def RFE_SVC(self, k):
+        print("recursive foward elimination - SVC")
+        svc = SVC(kernel="linear", C=1)
+        rfe = RFE(estimator=svc, n_features_to_select=1, step=1)
+        rfe.fit(self.X, self.y)
+        ranking = rfe.ranking_
+        # print(self.X[0])
+        # print(ranking)
+        s = np.array(ranking)
+        sort_index = np.argsort(ranking)
+        # print(ranking)
+        # print(sort_index)
+        # print(np.sort(ranking))
+        newX = []
+        for i in range (len(self.X)):
+            x = []
+            for j in range(k):
+                x.append(self.X[i][sort_index[j]])
+            newX.append(x)
+        newX = np.array(newX)
+        return newX
