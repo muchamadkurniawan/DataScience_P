@@ -5,6 +5,8 @@ from sklearn.model_selection import train_test_split
 from feature_selection import *
 from sklearn.model_selection import KFold
 import statistics
+from sklearn.model_selection import LeaveOneOut
+from sklearn.model_selection import cross_val_score
 
 import numpy as np
 if __name__ == '__main__':
@@ -15,7 +17,7 @@ if __name__ == '__main__':
     # glcm
     # dissimilarity
     # asmaDataset
-    data = class_dataset(dataset_name="glcm")
+    data = class_dataset(dataset_name="asmaDataset")
     # print("data freme :\n", data.df)
     # print("feature :\n", data.X)
     # print("class :\n", data.y)
@@ -24,14 +26,14 @@ if __name__ == '__main__':
 
 
     #preprocesing (normalisasi)
-    # select = feature_selection(data.X, data.y)
+    select = feature_selection(data.X, data.y)
     # # data.X = select.linearSVC()
     # # data.X = select.tree_based()
     # # data.X = select.pearson_correletion(0.35)
     # # data.X = select.selectKbest_Anova(4)
     # # data.X = select.selectKbest_Chi2(4)
     # # data.X = select.selectKbest_regression(4)
-    # data.X = select.RFE_SVC(4)
+    data.X = select.RFE_SVC(4)
 
     # random split dataset
     X_train, X_test, y_train, y_test = train_test_split(
@@ -49,7 +51,7 @@ if __name__ == '__main__':
     kf = KFold(n_splits=3, random_state=None, shuffle=True)
     accAll = []
     for train_index, test_index in kf.split(data.X):
-        print("train index : ", train_index)
+        # print("train index : ", train_index)
         # print("test index :",test_index)
         X_train, X_test = data.X[train_index,:], data.X[test_index,:]
         # print("xtrain ", X_train)
@@ -70,6 +72,20 @@ if __name__ == '__main__':
     print("akurasi rata-rata (Kfold) : ", statistics.mean(accAll))
     print("ACC Random split dataset: ", accRSD)
 
+    # scores = cross_val_score(DT, X, y, cv=5, scoring='accuracy')
+    loo = LeaveOneOut()
+    loo.get_n_splits(data.X)
+    accLOO= []
+    for train_index, test_index in loo.split(data.X):
+        X_train, X_test = data.X[train_index, :], data.X[test_index, :]
+        y_train, y_test = data.y[train_index], data.y[test_index]
+        DT = class_DecisionTree(X_train, y_train)
+        DT.model()
+        y_pred = DT.predict(X_test)
+        acc = accuracy_score(y_test, y_pred)
+        # print("accuracy: ", acc)
+        accLOO.append(acc)
+    print("akurasi rata-rata (LOOCV) : ", statistics.mean(accLOO))
     #
 
     # ## model NB

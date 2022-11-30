@@ -85,7 +85,7 @@ class class_DecisionTree:
     model = None
 
     def __init__(self, data, label):
-        print("Decession Tree Classification")
+        # print("Decession Tree Classification")
         self.X = data
         self.y = label
 
