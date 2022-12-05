@@ -19,8 +19,8 @@ if __name__ == '__main__':
     # asmaDataset
     data = class_dataset(dataset_name="asmaDataset")
     # print("data freme :\n", data.df)
-    # print("feature :\n", data.X)
-    # print("class :\n", data.y)
+    print("feature :\n", data.X)
+    print("class :\n", data.y)
 
     #missing value
 
@@ -35,58 +35,60 @@ if __name__ == '__main__':
     # # data.X = select.selectKbest_regression(4)
     data.X = select.RFE_SVC(4)
 
-    # random split dataset
-    X_train, X_test, y_train, y_test = train_test_split(
-        data.X, data.y, test_size=0.33, random_state=42)
-    DT = class_DecisionTree(X_train, y_train)
-    DT.model()
-    y_pred = DT.predict(X_test)
-    accRSD = accuracy_score(y_test, y_pred)
+    # # random split dataset
+    # X_train, X_test, y_train, y_test = train_test_split(
+    #     data.X, data.y, test_size=0.33, random_state=42)
+    # DT = class_DecisionTree(X_train, y_train)
+    # DT.model()
+    # y_pred = DT.predict(X_test)
+    # accRSD = accuracy_score(y_test, y_pred)
 
 
     # Kfold cross validation
-    # kfold with NB
-    data.y = np.array(data.y)
-    # print(data.y)
-    kf = KFold(n_splits=3, random_state=None, shuffle=True)
-    accAll = []
-    for train_index, test_index in kf.split(data.X):
-        # print("train index : ", train_index)
-        # print("test index :",test_index)
-        X_train, X_test = data.X[train_index,:], data.X[test_index,:]
-        # print("xtrain ", X_train)
-        # print("xtest ", X_test)
-        y_train, y_test = data.y[train_index], data.y[test_index]
-        # print("len train :", len(y_train))
-        # print("len test :",len(y_test))
-        # model KNN
-        print("--------------------------------")
-        DT = class_DecisionTree(X_train, y_train)
-        DT.model()
-        y_pred = DT.predict(X_test)
-        # print("compare :", y_pred, y_test)
-        acc = accuracy_score(y_test, y_pred)
-        print("accuracy: ", acc)
-        # print("accuracy : ", acc)
-        accAll.append(acc)
-    print("akurasi rata-rata (Kfold) : ", statistics.mean(accAll))
-    print("ACC Random split dataset: ", accRSD)
-
-    # scores = cross_val_score(DT, X, y, cv=5, scoring='accuracy')
-    loo = LeaveOneOut()
-    loo.get_n_splits(data.X)
-    accLOO= []
-    for train_index, test_index in loo.split(data.X):
-        X_train, X_test = data.X[train_index, :], data.X[test_index, :]
-        y_train, y_test = data.y[train_index], data.y[test_index]
-        DT = class_DecisionTree(X_train, y_train)
-        DT.model()
-        y_pred = DT.predict(X_test)
-        acc = accuracy_score(y_test, y_pred)
-        # print("accuracy: ", acc)
-        accLOO.append(acc)
-    print("akurasi rata-rata (LOOCV) : ", statistics.mean(accLOO))
+    # # kfold with NB
+    # data.y = np.array(data.y)
+    # # print(data.y)
+    # kf = KFold(n_splits=3, random_state=None, shuffle=True)
+    # accAll = []
+    # for train_index, test_index in kf.split(data.X):
+    #     # print("train index : ", train_index)
+    #     # print("test index :",test_index)
+    #     X_train, X_test = data.X[train_index,:], data.X[test_index,:]
+    #     # print("xtrain ", X_train)
+    #     # print("xtest ", X_test)
+    #     y_train, y_test = data.y[train_index], data.y[test_index]
+    #     # print("len train :", len(y_train))
+    #     # print("len test :",len(y_test))
+    #     # model KNN
+    #     print("--------------------------------")
+    #     DT = class_DecisionTree(X_train, y_train)
+    #     DT.model()
+    #     y_pred = DT.predict(X_test)
+    #     # print("compare :", y_pred, y_test)
+    #     acc = accuracy_score(y_test, y_pred)
+    #     print("accuracy: ", acc)
+    #     # print("accuracy : ", acc)
+    #     accAll.append(acc)
+    # print("akurasi rata-rata (Kfold) : ", statistics.mean(accAll))
+    # print("ACC Random split dataset: ", accRSD)
     #
+    # # scores = cross_val_score(DT, X, y, cv=5, scoring='accuracy')
+    # loo = LeaveOneOut()
+    # loo.get_n_splits(data.X)
+    # accLOO= []
+    # for train_index, test_index in loo.split(data.X):
+    #     X_train, X_test = data.X[train_index, :], data.X[test_index, :]
+    #     y_train, y_test = data.y[train_index], data.y[test_index]
+    #     DT = class_DecisionTree(X_train, y_train)
+    #     DT.model()
+    #     y_pred = DT.predict(X_test)
+    #     acc = accuracy_score(y_test, y_pred)
+    #     # print("accuracy: ", acc)
+    #     accLOO.append(acc)
+    # print("akurasi rata-rata (LOOCV) : ", statistics.mean(accLOO))
+    #
+
+
 
     # ## model NB
     # print("--------------------------------")

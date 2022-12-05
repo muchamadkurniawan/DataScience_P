@@ -41,7 +41,7 @@ class feature_selection:
         for i in range(len(self.X[0])):
             corr, _ = pearsonr(self.X[:,i], self.y)
             person.append(corr)
-        # print(person)
+
         th = threshold
         ind = []
         newX = []
@@ -52,8 +52,6 @@ class feature_selection:
                 for j in range(len(self.X)):
                     x.append(self.X[j][i])
                 newX.append(x)
-        # print(np.array(newX))
-        # print(ind)
         return np.array(newX).transpose()
 
     def selectKbest_Anova(self, nfeature):
@@ -79,20 +77,14 @@ class feature_selection:
         return X_kbest
 
     def RFE_SVC(self, k):
-        print("recursive foward elimination - SVC")
+        print("recursive forward elimination - SVC")
         svc = SVC(kernel="linear", C=1)
         rfe = RFE(estimator=svc, n_features_to_select=1, step=1)
         rfe.fit(self.X, self.y)
         ranking = rfe.ranking_
-        # print(self.X[0])
-        # print(ranking)
-        s = np.array(ranking)
         sort_index = np.argsort(ranking)
-        # print(ranking)
-        # print(sort_index)
-        # print(np.sort(ranking))
         newX = []
-        for i in range (len(self.X)):
+        for i in range(len(self.X)):
             x = []
             for j in range(k):
                 x.append(self.X[i][sort_index[j]])
